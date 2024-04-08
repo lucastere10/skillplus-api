@@ -92,6 +92,9 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private transient List<Contato> contatos;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private transient List<UsuarioSkill> usuarioSkills;
+
     public Usuario(String nome, String email, String senha, UsuarioTipo usuarioTipo) {
         this.nome = nome;
         this.email = email;

@@ -62,9 +62,8 @@ public class ContatoController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ContatoModel> adicionar(@RequestBody ContatoInput contatoInput,
             @AuthenticationPrincipal Usuario usuario) {
-        Usuario usuarioAtual = usuarioService.buscarOuFalhar(usuario.getUsuarioId());
         Contato contato = contatoInputDisassembler.toDomainObject(contatoInput);
-        contato = contatoService.salvar(contato, usuarioAtual);
+        contato = contatoService.salvar(contato, usuario);
         ContatoModel contatoModel = contatoModelAssembler.toModel(contato);
 
         return ResponseEntity.ok(contatoModel);

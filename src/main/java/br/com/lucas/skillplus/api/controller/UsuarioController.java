@@ -96,7 +96,6 @@ public class UsuarioController {
     
         return new PageImpl<>(usuariosModel, pageable, usuariosPage.getTotalElements());
     }
-    
 
     @GetMapping(value = "/{usuarioId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UsuarioModel buscar(@PathVariable Long usuarioId) {
