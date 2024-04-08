@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.lucas.skillplus.domain.exception.ContatoNaoEncontradoException;
 import br.com.lucas.skillplus.domain.exception.NegocioException;
-import br.com.lucas.skillplus.domain.exception.UsuarioNaoEncontradoException;
 import br.com.lucas.skillplus.domain.model.Contato;
 import br.com.lucas.skillplus.domain.model.Usuario;
 import br.com.lucas.skillplus.domain.repository.ContatoRepository;
@@ -32,7 +31,7 @@ public class ContatoService {
 
     public Contato buscarOuFalhar(Long contatoId) {
         return contatoRepository.findById(contatoId)
-                .orElseThrow(() -> new UsuarioNaoEncontradoException(contatoId));
+                .orElseThrow(() -> new ContatoNaoEncontradoException(contatoId));
     }
 
     @Transactional
