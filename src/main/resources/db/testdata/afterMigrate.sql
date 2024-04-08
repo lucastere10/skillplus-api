@@ -1,0 +1,3 @@
+-- delete from FOTO;
+-- delete from CONT;
+-- delete from USUA;
