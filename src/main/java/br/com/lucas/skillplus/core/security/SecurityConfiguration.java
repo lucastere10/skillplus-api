@@ -29,6 +29,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/auth/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auth/totp/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/totp/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auth/user").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/usuarios").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/usuarios/status/*").hasRole("ADMIN")

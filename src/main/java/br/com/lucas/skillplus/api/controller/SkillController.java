@@ -1,5 +1,6 @@
 package br.com.lucas.skillplus.api.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.lucas.skillplus.api.assembler.SkillInputDisassembler;
 import br.com.lucas.skillplus.api.assembler.SkillModelAssembler;
 import br.com.lucas.skillplus.api.dto.input.SkillInput;
 import br.com.lucas.skillplus.api.dto.model.SkillModel;
+import br.com.lucas.skillplus.api.openapi.SkillControllerOpenApi;
 import br.com.lucas.skillplus.domain.model.Skill;
 import br.com.lucas.skillplus.domain.repository.SkillRepository;
 import br.com.lucas.skillplus.domain.service.SkillService;
@@ -34,7 +37,7 @@ import br.com.lucas.skillplus.domain.service.SkillService;
 @RestController
 @RequestMapping(value = "/api/skills")
 @CrossOrigin(origins = "http://localhost:3000/")
-public class SkillController {
+public class SkillController implements SkillControllerOpenApi {
 
     @Autowired
     SkillRepository skillRepository;
@@ -49,13 +52,15 @@ public class SkillController {
     SkillModelAssembler skillModelAssembler;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<SkillModel> adicionar(@RequestBody SkillInput skillInput) {
         Skill skill = skillInputDisassembler.toDomainObject(skillInput);
         skill = skillService.salvar(skill);
         SkillModel skillModel = skillModelAssembler.toModel(skill);
-
-        return ResponseEntity.ok(skillModel);
+    
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(skillModel.getSkillId()).toUri();
+    
+        return ResponseEntity.created(location).body(skillModel);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -101,6 +106,5 @@ public class SkillController {
         Skill skill = skillService.ativar(skillId);
         return ResponseEntity.ok(skill);
     }
-
 
 }

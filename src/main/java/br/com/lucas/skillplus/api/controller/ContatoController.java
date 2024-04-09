@@ -1,5 +1,6 @@
 package br.com.lucas.skillplus.api.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.lucas.skillplus.api.assembler.ContatoInputDisassembler;
 import br.com.lucas.skillplus.api.assembler.ContatoModelAssembler;
 import br.com.lucas.skillplus.api.dto.input.ContatoInput;
 import br.com.lucas.skillplus.api.dto.model.ContatoModel;
+import br.com.lucas.skillplus.api.openapi.ContatoControllerOpenApi;
 import br.com.lucas.skillplus.domain.model.Contato;
 import br.com.lucas.skillplus.domain.model.Usuario;
 import br.com.lucas.skillplus.domain.repository.ContatoRepository;
@@ -38,7 +41,7 @@ import br.com.lucas.skillplus.domain.service.UsuarioService;
 @RestController
 @RequestMapping(value = "/api/contatos")
 @CrossOrigin(origins = "http://localhost:3000/")
-public class ContatoController {
+public class ContatoController implements ContatoControllerOpenApi {
 
     @Autowired
     private ContatoRepository contatoRepository;
@@ -59,14 +62,16 @@ public class ContatoController {
     private ContatoInputDisassembler contatoInputDisassembler;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ContatoModel> adicionar(@RequestBody ContatoInput contatoInput,
             @AuthenticationPrincipal Usuario usuario) {
         Contato contato = contatoInputDisassembler.toDomainObject(contatoInput);
         contato = contatoService.salvar(contato, usuario);
         ContatoModel contatoModel = contatoModelAssembler.toModel(contato);
 
-        return ResponseEntity.ok(contatoModel);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(contatoModel.getContatoId()).toUri();
+
+        return ResponseEntity.created(location).body(contatoModel);
     }
 
     @PutMapping(value = "/{contatoId}", produces = MediaType.APPLICATION_JSON_VALUE)
