@@ -38,6 +38,7 @@ import br.com.lucas.skillplus.api.dto.input.FotoInput;
 import br.com.lucas.skillplus.api.dto.input.UsuarioPOSTInput;
 import br.com.lucas.skillplus.api.dto.model.FotoModel;
 import br.com.lucas.skillplus.api.dto.model.UsuarioModel;
+import br.com.lucas.skillplus.api.openapi.UsuarioControllerOpenApi;
 import br.com.lucas.skillplus.domain.exception.NegocioException;
 import br.com.lucas.skillplus.domain.model.Foto;
 import br.com.lucas.skillplus.domain.model.Usuario;
@@ -49,7 +50,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping(value = "/api/usuarios")
 @CrossOrigin(origins = "http://localhost:3000/")
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerOpenApi {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -143,7 +144,6 @@ public class UsuarioController {
     }
 
     // FOTOS
-
     @GetMapping("/foto")
     public ResponseEntity<Foto> getFoto(@AuthenticationPrincipal Usuario usuario) {
         Foto foto = fotoService.getFoto(usuario);

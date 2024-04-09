@@ -1,5 +1,6 @@
 package br.com.lucas.skillplus.api.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.lucas.skillplus.api.assembler.UsuarioSkillInputDisassembler;
 import br.com.lucas.skillplus.api.assembler.UsuarioSkillModelAssembler;
 import br.com.lucas.skillplus.api.dto.input.UsuarioSkillInput;
 import br.com.lucas.skillplus.api.dto.model.UsuarioSkillModel;
+import br.com.lucas.skillplus.api.openapi.UsuarioSkillControllerOpenApi;
 import br.com.lucas.skillplus.domain.model.Usuario;
 import br.com.lucas.skillplus.domain.model.UsuarioSkill;
 import br.com.lucas.skillplus.domain.repository.UsuarioRepository;
@@ -39,7 +42,7 @@ import br.com.lucas.skillplus.domain.service.UsuarioSkillService;
 @RestController
 @RequestMapping(value = "/api/usuarioskills")
 @CrossOrigin(origins = "http://localhost:3000/")
-public class UsuarioSkillController {
+public class UsuarioSkillController implements UsuarioSkillControllerOpenApi {
 
     @Autowired
     private UsuarioSkillRepository usuarioSkillRepository;
@@ -63,7 +66,6 @@ public class UsuarioSkillController {
     private UsuarioSkillInputDisassembler usuarioSkillInputDisassembler;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UsuarioSkillModel> adicionar(@RequestBody UsuarioSkillInput usuarioSkillInput,
             @AuthenticationPrincipal Usuario usuario) {
         UsuarioSkill usuarioSkill = usuarioSkillInputDisassembler.toDomainObject(usuarioSkillInput);
@@ -71,7 +73,10 @@ public class UsuarioSkillController {
         usuarioSkill = usuarioSkillService.salvar(usuarioSkill, usuario, usuarioSkillInput.getSkillNome());
         UsuarioSkillModel usuarioSkillModel = usuarioSkillModelAssembler.toModel(usuarioSkill);
 
-        return ResponseEntity.ok(usuarioSkillModel);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(usuarioSkillModel.getUsuarioSkillId()).toUri();
+
+        return ResponseEntity.created(location).body(usuarioSkillModel);
     }
 
     @PutMapping(value = "/{usuarioSkillId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -108,7 +113,8 @@ public class UsuarioSkillController {
             @PageableDefault(size = 10, sort = "usuarioSkillId") Pageable pageable) {
         Page<UsuarioSkill> usuarioSkillsPage = usuarioSkillRepository.findByUsuario(usuario, pageable);
 
-        List<UsuarioSkillModel> usuarioSkillsModel = usuarioSkillModelAssembler.toCollectionModel(usuarioSkillsPage.getContent());
+        List<UsuarioSkillModel> usuarioSkillsModel = usuarioSkillModelAssembler
+                .toCollectionModel(usuarioSkillsPage.getContent());
 
         return new PageImpl<>(usuarioSkillsModel, pageable, usuarioSkillsPage.getTotalElements());
     }
@@ -119,7 +125,8 @@ public class UsuarioSkillController {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
         Page<UsuarioSkill> usuarioSkillsPage = usuarioSkillRepository.findByUsuario(usuario, pageable);
-        List<UsuarioSkillModel> usuarioSkillsModel = usuarioSkillModelAssembler.toCollectionModel(usuarioSkillsPage.getContent());
+        List<UsuarioSkillModel> usuarioSkillsModel = usuarioSkillModelAssembler
+                .toCollectionModel(usuarioSkillsPage.getContent());
 
         return new PageImpl<>(usuarioSkillsModel, pageable, usuarioSkillsPage.getTotalElements());
     }
@@ -130,7 +137,8 @@ public class UsuarioSkillController {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
         Page<UsuarioSkill> usuarioSkillsPage = usuarioSkillRepository.findByUsuarioAndAtivoTrue(usuario, pageable);
-        List<UsuarioSkillModel> usuarioSkillsModel = usuarioSkillModelAssembler.toCollectionModel(usuarioSkillsPage.getContent());
+        List<UsuarioSkillModel> usuarioSkillsModel = usuarioSkillModelAssembler
+                .toCollectionModel(usuarioSkillsPage.getContent());
 
         return new PageImpl<>(usuarioSkillsModel, pageable, usuarioSkillsPage.getTotalElements());
     }

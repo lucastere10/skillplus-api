@@ -52,7 +52,7 @@ public class AuthenticationController implements AuthenticationControllerOpenApi
 
     @PostMapping("/login-social")
     @CrossOrigin(origins = "http://localhost:3000/")
-    public ResponseEntity<LoginResponseDTO> googleLogin(@RequestBody @Valid RegisterDTO data) {
+    public ResponseEntity<LoginResponseDTO> socialLogin(@RequestBody @Valid RegisterDTO data) {
         return ResponseEntity.ok(userService.socialLogin(data));
     }
 
@@ -83,7 +83,6 @@ public class AuthenticationController implements AuthenticationControllerOpenApi
     }
 
     @PostMapping("/totp/validar")
-    @CrossOrigin(origins = "http://localhost:3000/")
     public String verify(@RequestParam String code) {
         return totpService.verify(code);
     }
