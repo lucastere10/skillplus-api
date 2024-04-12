@@ -17,6 +17,10 @@ public interface SkillRepository extends JpaRepository<Skill, Long> {
 
     Optional<Skill> findBySkillNome(String nome);
 
+    Page<Skill> findByAtivoTrue(Pageable pageable);
+
+    Page<Skill> findByAtivoTrueAndSkillNomeContainingIgnoreCase(String search, Pageable pageable);
+
     @Query(value = "SELECT * FROM SKIL u WHERE LOWER(u.SKIL_TX_NOME) LIKE LOWER(CONCAT('%', :nome, '%'))", nativeQuery = true)
     Page<Skill> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 }
