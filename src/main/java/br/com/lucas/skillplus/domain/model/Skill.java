@@ -11,6 +11,8 @@ import br.com.lucas.skillplus.domain.enums.SkillDificuldade;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,9 +42,11 @@ public class Skill {
     private String skillDescricao;
 
     @Column(name = "SKIL_TX_CATEGORIA", nullable = false)
+    @Enumerated(EnumType.STRING)
     private SkillCategoria skillCategoria;
 
     @Column(name = "SKIL_TX_DIFICULDADE")
+    @Enumerated(EnumType.STRING)
     private SkillDificuldade skillDificuldade;
     
     @Column(name = "SKIL_TX_URL")

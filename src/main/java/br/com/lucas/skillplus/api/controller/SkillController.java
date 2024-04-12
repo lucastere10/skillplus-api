@@ -56,25 +56,42 @@ public class SkillController implements SkillControllerOpenApi {
         Skill skill = skillInputDisassembler.toDomainObject(skillInput);
         skill = skillService.salvar(skill);
         SkillModel skillModel = skillModelAssembler.toModel(skill);
-    
+
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(skillModel.getSkillId()).toUri();
-    
+
         return ResponseEntity.created(location).body(skillModel);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<SkillModel> listar(@RequestParam(required = false) String search, @PageableDefault(size = 10) Pageable pageable) {
+    public Page<SkillModel> listar(@RequestParam(required = false) String search,
+            @PageableDefault(size = 10) Pageable pageable) {
         Page<Skill> skillsPage;
-        
+
         if (search != null) {
             skillsPage = skillRepository.findByNomeContainingIgnoreCase(search, pageable);
         } else {
             skillsPage = skillRepository.findAll(pageable);
         }
-    
+
         List<SkillModel> skillsModel = skillModelAssembler.toCollectionModel(skillsPage.getContent());
-    
+
+        return new PageImpl<>(skillsModel, pageable, skillsPage.getTotalElements());
+    }
+
+    @GetMapping(value = "/publico", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<SkillModel> listarAtivos(@RequestParam(required = false) String search,
+            @PageableDefault(size = 10) Pageable pageable) {
+
+        Page<Skill> skillsPage;
+
+        if (search != null) {
+            skillsPage = skillRepository.findByAtivoTrueAndSkillNomeContainingIgnoreCase(search, pageable);
+        } else {
+            skillsPage = skillRepository.findByAtivoTrue(pageable);
+        }
+
+        List<SkillModel> skillsModel = skillModelAssembler.toCollectionModel(skillsPage.getContent());
         return new PageImpl<>(skillsModel, pageable, skillsPage.getTotalElements());
     }
 
