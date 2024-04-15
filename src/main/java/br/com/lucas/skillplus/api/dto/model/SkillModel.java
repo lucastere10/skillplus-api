@@ -1,5 +1,9 @@
 package br.com.lucas.skillplus.api.dto.model;
 
+import java.time.OffsetDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import br.com.lucas.skillplus.domain.enums.SkillCategoria;
 import br.com.lucas.skillplus.domain.enums.SkillDificuldade;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,5 +34,13 @@ public class SkillModel {
 
     @Schema(example = "true")
     private Boolean ativo;
+
+    @Schema(example = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private OffsetDateTime dataCadastro;
+
+    @Schema(example = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private OffsetDateTime dataAtualizacao;
 
 }

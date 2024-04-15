@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -85,8 +86,14 @@ public class ContatoController implements ContatoControllerOpenApi {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<ContatoModel> listar(@PageableDefault(size = 10) Pageable pageable) {
-        Page<Contato> contatosPage = contatoRepository.findAll(pageable);
+    public Page<ContatoModel> listar(@RequestParam(required = false) String search, @PageableDefault(size = 10) Pageable pageable) {
+        Page<Contato> contatosPage;
+
+        if (search != null) {
+            contatosPage = contatoRepository.findByNomeContainingIgnoreCase(search, pageable);
+        } else {
+            contatosPage = contatoRepository.findAll(pageable);
+        }
 
         List<ContatoModel> contatosModel = contatoModelAssembler
                 .toCollectionModel(contatosPage.getContent());
