@@ -50,9 +50,9 @@ public class SpringDocConfig {
                                                                 .bearerFormat("JWT")))
                                 .info(new Info()
                                                 .title("SkillPlus")
-                                                .version("0.1v")
+                                                .version("0.5v")
                                                 .description(
-                                                                "Backend de um projeto desenvolvido para prática acadêmica. Ele foi construído usando Java 21 e possui um sistema de login que utiliza tokens JWT para autenticação. O projeto inclui um CRUD completo para produtos, pedidos, avaliações do usuário e logs para auditoria. Além disso, possui tratamento de erros com ErrorResponse e exceções personalizadas.")
+                                                                "Backend de um projeto desenvolvido para prática acadêmica. Ele foi construído usando Java 21 e possui um sistema de login que utiliza tokens JWT para autenticação. O projeto inclui um CRUD completo para usuarios, contatos, habilidades, cartões com upload de fotos e totp para autenticação em 2 fatores. Além disso, possui tratamento de erros com ErrorResponse e exceções personalizadas.")
                                                 .contact(new Contact()
                                                                 .name("Lucas Caldas")
                                                                 .email("lucastere10@gmail.com"))
