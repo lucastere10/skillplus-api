@@ -52,7 +52,9 @@ public interface CartaoControllerOpenApi {
     })
     @PageableAsQueryParam
     @SecurityRequirement(name = "Bearer Authentication")
-    public Page<CartaoModel> listar(@PageableDefault(size = 10) Pageable pageable);
+    public Page<CartaoModel> listar(
+        @Parameter(description = "string de pesquia", required = false) String search,
+        @PageableDefault(size = 10) Pageable pageable);
 
     @Operation(summary = "Buscar um cartão por ID", responses = {
             @ApiResponse(responseCode = "200"),

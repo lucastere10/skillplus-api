@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.lucas.skillplus.api.assembler.CartaoInputDisassembler;
@@ -75,8 +76,14 @@ public class CartaoController implements CartaoControllerOpenApi{
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<CartaoModel> listar(@PageableDefault(size = 10) Pageable pageable) {
-        Page<Cartao> cartoesPage = cartaoRepository.findAll(pageable);
+    public Page<CartaoModel> listar(@RequestParam(required = false) String search, @PageableDefault(size = 10) Pageable pageable) {
+        Page<Cartao> cartoesPage;
+
+        if (search != null) {
+            cartoesPage = cartaoRepository.findByCartaoNomeContainingIgnoreCase(search, pageable);
+        } else {
+            cartoesPage = cartaoRepository.findAll(pageable);
+        }
 
         List<CartaoModel> cartoesModel = cartaoModelAssembler
                 .toCollectionModel(cartoesPage.getContent());

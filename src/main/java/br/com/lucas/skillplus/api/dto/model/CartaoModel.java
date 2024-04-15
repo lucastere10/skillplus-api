@@ -1,5 +1,9 @@
 package br.com.lucas.skillplus.api.dto.model;
 
+import java.time.OffsetDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,5 +35,13 @@ public class CartaoModel {
 
     @Schema(example = "true")
     private Boolean ativo;
+
+    @Schema(example = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private OffsetDateTime dataCadastro;
+
+    @Schema(example = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private OffsetDateTime dataAtualizacao;
 
 }

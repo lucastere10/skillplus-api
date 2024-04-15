@@ -51,7 +51,9 @@ public interface ContatoControllerOpenApi {
     })
     @PageableAsQueryParam
     @SecurityRequirement(name = "Bearer Authentication")
-    public Page<ContatoModel> listar(@Parameter(hidden = true) Pageable pageable);
+    public Page<ContatoModel> listar(
+        @Parameter(description = "string de pesquia", required = false) String search,
+        @Parameter(hidden = true) Pageable pageable);
 
     @Operation(summary = "Buscar um contato por ID", responses = {
             @ApiResponse(responseCode = "200"),
