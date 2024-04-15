@@ -24,7 +24,7 @@ SkillPlus é um projeto Spring em Java 21 para compartilhamento de habilidades e
 
 ## Modelo Banco de Dados
 
-<img src="./public/images/SkillPlus.drawio.png">
+<img src="./public/images/SkillPlus.drawio.v2.png">
 <br>
 
 ## Documentação da API
