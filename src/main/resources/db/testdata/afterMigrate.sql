@@ -199,8 +199,8 @@ INSERT INTO
     )
 VALUES
     (
-        'Inglês Básico',
-        'Comece a aprender inglês com lições para iniciantes.',
+        'Inglês',
+        'Comece a aprender inglês com lições para práticas.',
         'IDIOMAS',
         'INICIANTE',
         TRUE,
@@ -208,7 +208,7 @@ VALUES
         CURRENT_TIMESTAMP
     ),
     (
-        'Espanhol Intermediário',
+        'Espanhol',
         'Desenvolva suas habilidades no idioma espanhol.',
         'IDIOMAS',
         'INTERMEDIARIO',

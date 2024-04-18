@@ -48,7 +48,7 @@ public class TotpService {
                 .period(30)
                 .build();
 
-        System.out.println(secret);
+        //System.out.println(secret);
 
         return DataUriForImage.getDataUriForImage(
                 qrGenerator.generate(data),

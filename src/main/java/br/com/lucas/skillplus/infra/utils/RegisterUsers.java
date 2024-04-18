@@ -26,7 +26,17 @@ public class RegisterUsers {
             new RegisterDTO("MicroserviceMike", "mike@mail.com", "admin"),
             new RegisterDTO("CloudyChris", "chris@mail.com", "admin"),
             new RegisterDTO("ContainerCara", "cara@mail.com", "admin"),
-            new RegisterDTO("DevOpsDan", "dan@mail.com", "admin")
+            new RegisterDTO("DevOpsDan", "dan@mail.com", "admin"),
+            new RegisterDTO("AgileAlex", "alex@mail.com", "admin"),
+            new RegisterDTO("BackendBella", "bella@mail.com", "admin"),
+            new RegisterDTO("FrontendFelix", "felix@mail.com", "admin"),
+            new RegisterDTO("TestingTina", "tina@mail.com", "admin"),
+            new RegisterDTO("SecuritySteve", "steve@mail.com", "admin"),
+            new RegisterDTO("DatabaseDiana", "diana@mail.com", "admin"),
+            new RegisterDTO("NetworkNina", "nina@mail.com", "admin"),
+            new RegisterDTO("ApiAdam", "adam@mail.com", "admin"),
+            new RegisterDTO("UiUma", "uma@mail.com", "admin"),
+            new RegisterDTO("GitGary", "gary@mail.com", "admin")
         };
         
         HttpHeaders headers = new HttpHeaders();
